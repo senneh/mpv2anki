@@ -1,14 +1,26 @@
 # mvp2anki
+![Preview](https://raw.githubusercontent.com/SenneH/mpv2anki/master/mpv2anki_preview.jpg)
 ## Overview 
-Inspired by subs2srs this script lets mpv users quickly creates notes for the Anki spaced.
+Inspired by subs2srs this script lets mpv users quickly creates notes for Anki from sound or video fragments with minimal dependencies.
 ## Requirements
 * Linux (Windows *might* work, but is not officially supported)
-* Anki
-* The AnkiConnect plugin
-* curl (required to connect to the AnkiConnect plugin)
+* [Anki](https://apps.ankiweb.net/)
+* The [AnkiConnect](https://ankiweb.net/shared/info/2055492159) plugin
+* curl (you should already have this)
+## Installation
+1. Save mpv2anki.lua in the mpv script folder (`~/.config/mpv/scripts/`). 
+2. Set the path to where Anki saves its media files in the config file (See Options below).
 ## Usage
-Save mpv2anki.lua in the mpv script folder (`~/.config/mpv/scripts/`). 
-Configure the script either by editing the options in the script or by creating a config file in mpv's script-opts folder (`~/.config/mpv/script-opts/mpv2anki.conf`) as seen below
+- Open a file in mpv and press `shift+f` to open the script menu.
+- Make sure Anki is also open.
+- Follow the onscreen instructions. 
+- To disable audio/snapshots/subtitles simply do not enter a value.
+- Double pressing removes the current value.
+- `e` to open the Anki add card dialog box with the entered values or `shift+e` to add directly.
+
+## Options
+Save as `mpv2anki.conf` in your script-opts folder (usually `~/.config/mpv/script-opts/`)
+
 ```
 # This is the only required value. replace "user" and "profile" with your own.
 # This must be an absolute path. '~' for home dir will NOT work
@@ -18,6 +30,7 @@ media_path=/home/user/.local/share/Anki2/profile/collection.media/
 deckname=mpv2anki
 # The note type
 modelName=mpv2anki
+
 # You can use these options to remap the fields
 field_audio=audio
 field_snapshot=snapshot
@@ -27,12 +40,14 @@ field_start_time=start_time
 field_end_time=end_time
 field_snapshot_time=snapshot_time
 field_title=title
-# The font size used in the menu.
-font_size=20
+
 # The url and port AnkiConnect uses. This should be the default 
 anki_url=localhost:8765
+
+# The font size used in the menu.
+font_size=20
+
 # audio & snapshot options
 audio_bitrate=128k
 snapshot_height=480
 ```
-
