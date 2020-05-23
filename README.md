@@ -46,6 +46,7 @@ anki_url=localhost:8765
 
 # The font size used in the menu.
 font_size=20
+shortcut=shift+f
 
 # audio & snapshot options
 audio_bitrate=128k
