@@ -23,6 +23,7 @@ local options = {
 	field_title = 'title',
     -- The font size used in the menu.
     font_size = 20,
+    shortcut = 'shift+f',
     -- In case you changed it
     anki_url = 'localhost:8765',
     audio_bitrate = '128k',
@@ -327,11 +328,8 @@ function menu_update()
     for i, sub in pairs(ctx.sub) do
         ass:tab():b(start_key .. ': ')
             :a('sub ' .. i)
-
         if sub == '' then sub = 'empty' end
-
         ass:a(' (' .. sub .. ')'):nl()
-
         start_key = start_key + 1
     end
 
@@ -345,7 +343,6 @@ end
 
 function menu_close()
     for _, val in pairs(menu_keybinds) do
-		msg.info('removed: ' .. val.key )
         mp.remove_key_binding(val.key)
     end
     overlay:remove()
@@ -403,4 +400,4 @@ end
 ------------------------------------------------------------
 -- Finally, set an 'entry point' in mpv
 
-mp.add_key_binding('shift+f', 'shift+f', menu_open)
+mp.add_key_binding(options.shortcut, options.shortcut, menu_open)
