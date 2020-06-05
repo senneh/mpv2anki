@@ -294,7 +294,8 @@ function menu_set_time(property)
 end
 
 function menu_set_subs(n)
-    local subs = mp.get_property('sub-text')
+    local subs = mp.get_property('sub-text'):gsub('\n', '')
+
     if subs == ctx.sub[n] then
         ctx.sub[n] = ''
     else
