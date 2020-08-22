@@ -278,10 +278,25 @@ local menu_keybinds = {
     { key = '3', fn = function() menu_set_time('snapshot_time') end },
     { key = '4', fn = function() menu_set_subs(1) end },
     { key = '5', fn = function() menu_set_subs(2) end },
+	{ key = 'shift+d', fn = function() menu_set_time_to_subs() end },
     { key = 'e', fn = function() create_anki_note(true) end },
     { key = 'shift+e', fn = function() create_anki_note(false) end },
     { key = 'ESC', fn = function() menu_close() end },
 }
+
+function menu_set_time_to_subs()
+	local start_time = mp.get_property_number('sub-start')
+	local end_time = mp.get_property_number('sub-end')
+	
+	if ctx.start_time == start_time and ctx.end_time == end_time then
+		ctx.start_time = -1
+		ctx.end_time = -1
+	else 
+		ctx.start_time = start_time
+		ctx.end_time = end_time
+	end
+	menu_update()
+end
 
 function menu_set_time(property)
     local time = mp.get_property_number('time-pos')
@@ -335,7 +350,9 @@ function menu_update()
     end
 
     -- menu options
-    ass:nl():b('e: '):a('Create card'):nl()
+    ass:nl()
+		:b('D: '):a('Set timing to sub'):nl()
+		:b('e: '):a('Create card'):nl()
         :b('E: '):a('Create card without GUI'):nl()
         :b('ESC: '):a('Close'):nl()
 
