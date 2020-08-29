@@ -149,6 +149,7 @@ function create_audio(
         'mpv', mp.get_property('path'),
         '--start=' .. start_time,
         '--end=' .. end_time,
+        '--aid=' .. mp.get_property("aid"),
         '--vid=no',
         '--loop-file=no',
         '--oacopts=b=' .. bitrate,
