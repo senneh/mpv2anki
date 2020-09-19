@@ -274,38 +274,58 @@ end
 -- main menu
 
 local menu_keybinds = {
-    { key = '1', fn = function() menu_set_time('start_time') end },
-    { key = '2', fn = function() menu_set_time('end_time') end },
-    { key = '3', fn = function() menu_set_time('snapshot_time') end },
+    { key = '1', fn = function() menu_set_time('start_time', 'time-pos') end },
+    { key = '2', fn = function() menu_set_time('end_time', 'time-pos') end },
+    { key = '3', fn = function() menu_set_time('snapshot_time', 'time-pos') end },
     { key = '4', fn = function() menu_set_subs(1) end },
     { key = '5', fn = function() menu_set_subs(2) end },
-	{ key = 'shift+d', fn = function() menu_set_time_to_subs() end },
+    { key = 'd', fn = function() menu_set_to_subs() end },
+    { key = 'D', fn = function() menu_clear_all() end },
+    { key = 'S', fn = function() menu_set_time('end_time', 'sub-end') end },
+    { key = 's', fn = function() menu_set_time('start_time', 'sub-start') end },
+    { key = 'a', fn = function() menu_append(1) end },
+    { key = 'A', fn = function() menu_append(2) end },
     { key = 'e', fn = function() create_anki_note(true) end },
     { key = 'shift+e', fn = function() create_anki_note(false) end },
     { key = 'ESC', fn = function() menu_close() end },
 }
 
-function menu_set_time_to_subs()
+function menu_append(n)
+    local subs = mp.get_property('sub-text'):gsub('\n', '')
+
+    ctx.sub[n] = ctx.sub[n] .. ' ' .. subs
+
+    menu_update()
+end
+
+function menu_set_to_subs()
 	local start_time = mp.get_property_number('sub-start')
 	local end_time = mp.get_property_number('sub-end')
 	
-	if ctx.start_time == start_time and ctx.end_time == end_time then
-		ctx.start_time = -1
-		ctx.end_time = -1
-	else 
-		ctx.start_time = start_time
-		ctx.end_time = end_time
+	if start_time == nil then
+		start_time = -1
 	end
+	
+	if end_time == nil then
+		end_time = -1
+	end
+	
+	ctx.start_time =  start_time
+	ctx.end_time = end_time
+	ctx.sub[1] = mp.get_property('sub-text'):gsub('\n', '')
+	
 	menu_update()
 end
 
-function menu_set_time(property)
-    local time = mp.get_property_number('time-pos')
-    if time == ctx[property] then
-        ctx[property] = -1
+function menu_set_time(field, prop)
+    local time = mp.get_property_number(prop)
+
+    if time == nil or time == ctx[field] then
+        ctx[field] = -1
     else
-        ctx[property] = time
+        ctx[field] = time
     end
+
     menu_update()
 end
 
@@ -319,6 +339,17 @@ function menu_set_subs(n)
     end
     menu_update()
 end
+
+function menu_clear_all()
+	ctx.start_time = -1
+	ctx.end_time = -1
+	ctx.snapshot_time = -1
+	ctx.sub[1] = ''
+	ctx.sub[2] = ''
+	
+	menu_update()
+end
+
 
 function menu_update()
     local ass = ASS.new():s(options.font_size):b('MPV2Anki'):nl():nl()
@@ -352,9 +383,10 @@ function menu_update()
 
     -- menu options
     ass:nl()
-		:b('D: '):a('Set timing to sub'):nl()
-		:b('e: '):a('Create card'):nl()
-        :b('E: '):a('Create card without GUI'):nl()
+		:b('d: '):a('Set to current subtitle ('):b('D: '):a('clear all)'):nl()
+		:b('s: '):a('Set end time to sub ('):b('S: '):a('begin time)'):nl()
+	    :b('a: '):a('Append sub 1 ('):b('A: '):a('sub 2)'):nl()
+		:b('e: '):a('Create card ('):b('E: '):a('without GUI)'):nl()
         :b('ESC: '):a('Close'):nl()
 
     ass:draw()
