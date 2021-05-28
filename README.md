@@ -10,6 +10,7 @@ Inspired by subs2srs this script lets mpv users quickly creates notes for Anki f
 ## Installation
 1. Save mpv2anki.lua in the mpv script folder (`~/.config/mpv/scripts/`). 
 2. Set the path to where Anki saves its media files in the config file (See Options below).
+3. Create a deck called mpv2anki and a note type called the same, then add the fields as described in the config file below.
 ## Usage
 - Open a file in mpv and press `shift+f` to open the script menu.
 - Make sure Anki is also open.
@@ -24,6 +25,7 @@ Save as `mpv2anki.conf` in your script-opts folder (usually `~/.config/mpv/scrip
 ```
 # This is the only required value. replace "user" and "profile" with your own.
 # This must be an absolute path. '~' for home dir will NOT work
+# Do not put the address in double or single quotes.
 media_path=/home/user/.local/share/Anki2/profile/collection.media/
 
 # These are the other options containing their default values.
